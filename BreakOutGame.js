@@ -48,7 +48,7 @@ let level = 1;
 let initialSpeed = 10;
 
 //local storage
-const bestScore = localStorage.getItem("bestScore");
+const TopScore = localStorage.getItem("TopScore");
 
 class DrawObject {
   constructor() {
@@ -133,10 +133,14 @@ class DrawObject {
     }
   }
 
-  DrawBestCore() {
+  DrawTopScore() {
     ctx.font = "bold 17pt Arial";
     ctx.fillStyle = "black";
-    ctx.fillText(`BEST SCORE: ${bestScore}`, 165, 120);
+    if (TopScore) {
+      ctx.fillText(`TOP SCORE: ${TopScore}`, 165, 120);
+    } else {
+      ctx.fillText(`TOP SCORE: 0`, 165, 120);
+    }
   }
 
   DrawLevel() {
@@ -238,7 +242,7 @@ class DrawCanvas {
 
       if (!this.life) {
         //sound.src = "./laugh.mp3";
-        localStorage.setItem("bestScore", this.score);
+        localStorage.setItem("TopScore", this.score);
         alert("GAME OVER 😝");
       } else if (this.life > 0) {
         alert(`YOU HAVE ${this.life} MORE CHANCE!  🙏 `);
@@ -370,7 +374,7 @@ class DrawCanvas {
         brickOffsetTop += 20;
       } else {
         bgm.pause();
-        localStorage.setItem("bestScore", this.score);
+        localStorage.setItem("TopScore", this.score);
         alert("YOU WIN 😄");
         clearInterval(timer);
         document.location.reload();
@@ -401,7 +405,7 @@ class DrawCanvas {
     this.drawObject.DrawLife(this.life);
     this.drawObject.DrawLevel();
     this.drawObject.DrawLine();
-    this.drawObject.DrawBestCore();
+    this.drawObject.DrawTopScore();
 
     if (level == 4) {
       this.drawObject.DrawBall2();
