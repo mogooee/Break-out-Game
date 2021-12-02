@@ -486,13 +486,10 @@ document.addEventListener("mousemove", (event) => {
   let myX = event.clientX - canvas.offsetLeft;
   let myY = event.clientY - canvas.offsetTop;
 
-  if (myX > 0 && myX < canvas.width) {
+  if (myX > 0 && myX < canvas.width && myY > 0 && myY < canvas.height) {
     //myX = paddle의 중앙
     drawObject.paddleX = myX - paddleWidth / 2;
-
-    if (myY > 0 && myY < canvas.height) {
-      pause = 0;
-    }
+    pause = 0;
   } else {
     pause = 1;
   }
