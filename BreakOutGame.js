@@ -8,6 +8,7 @@ const volumeOff = document.querySelector(".volumeOff");
 //[V]bgm
 //[]효과음
 const bgm = document.getElementById("bgm");
+let soundEffect = 0;
 
 volumeOff.addEventListener("click", (event) => {
   volumeOff.classList.toggle("hidden");
@@ -16,14 +17,14 @@ volumeOff.addEventListener("click", (event) => {
   bgm.muted = false;
   bgm.volume = 0.4;
   bgm.play();
+  soundEffect = 1;
 });
 
 volumeOn.addEventListener("click", (event) => {
   volumeOff.classList.toggle("hidden");
   volumeOn.classList.toggle("hidden");
   bgm.pause();
-  touchPaddleSound.pause();
-  breakSound.pause();
+  soundEffect = 0;
 });
 
 const ballRadius = 12;
@@ -273,7 +274,9 @@ class DrawCanvas {
       ) {
         this.dy = -this.dy;
         this.ChangeSpeed();
-        touchPaddleSound.play();
+        if (soundEffect) {
+          touchPaddleSound.play();
+        }
       }
     }
     //ball2
@@ -287,7 +290,9 @@ class DrawCanvas {
       ) {
         this.dy2 = -this.dy2;
         this.ChangeSpeed();
-        touchPaddleSound.play();
+        if (soundEffect) {
+          touchPaddleSound.play();
+        }
       }
     }
 
@@ -352,7 +357,9 @@ class DrawCanvas {
               this.drawObject.bricks[r][c] -= 1;
               if (!this.drawObject.bricks[r][c]) {
                 this.score++;
-                breakSound.play();
+                if (soundEffect) {
+                  breakSound.play();
+                }
               }
               this.contact = 0;
             }, 50);
