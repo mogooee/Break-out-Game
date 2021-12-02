@@ -48,7 +48,8 @@ let level = 1;
 let initialSpeed = 10;
 
 //local storage
-const bestScore = localStorage.getItem("bestScore");
+
+const topScore = localStorage.getItem("topScore");
 
 class DrawObject {
   constructor() {
@@ -133,10 +134,14 @@ class DrawObject {
     }
   }
 
-  DrawBestCore() {
+  DrawTopScore() {
     ctx.font = "bold 17pt Arial";
     ctx.fillStyle = "black";
-    ctx.fillText(`BEST SCORE: ${bestScore}`, 165, 120);
+    if (topScore) {
+      ctx.fillText(`TOP SCORE: ${topScore}`, 160, 121);
+    } else {
+      ctx.fillText(`TOP SCORE: 0`, 160, 121);
+    }
   }
 
   DrawLevel() {
@@ -149,7 +154,7 @@ class DrawObject {
     ctx.font = "bold 20pt Arial";
     ctx.fillStyle = "#57837B";
     // 💥 💘 💰 🚀 🎇 🌟
-    ctx.fillText(`🚀 Score: ${score}`, 49, 38);
+    ctx.fillText(`🚀 Score: ${score}`, 46, 38);
   }
 
   DrawLine() {
@@ -238,7 +243,7 @@ class DrawCanvas {
 
       if (!this.life) {
         //sound.src = "./laugh.mp3";
-        localStorage.setItem("bestScore", this.score);
+        localStorage.setItem("score", this.score);
         alert("GAME OVER 😝");
       } else if (this.life > 0) {
         alert(`YOU HAVE ${this.life} MORE CHANCE!  🙏 `);
@@ -370,7 +375,7 @@ class DrawCanvas {
         brickOffsetTop += 20;
       } else {
         bgm.pause();
-        localStorage.setItem("bestScore", this.score);
+        localStorage.setItem("topScore", this.score);
         alert("YOU WIN 😄");
         clearInterval(timer);
         document.location.reload();
@@ -401,7 +406,7 @@ class DrawCanvas {
     this.drawObject.DrawLife(this.life);
     this.drawObject.DrawLevel();
     this.drawObject.DrawLine();
-    this.drawObject.DrawBestCore();
+    this.drawObject.DrawTopScore();
 
     if (level == 4) {
       this.drawObject.DrawBall2();
