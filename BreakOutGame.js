@@ -45,7 +45,7 @@ let brickOffsetTop = 134;
 const brickOffsetLeft = 2.8;
 
 let level = 1;
-let initialSpeed = 10;
+let initialSpeed = 8;
 
 //local storage
 const TopScore = localStorage.getItem("TopScore");
@@ -358,7 +358,7 @@ class DrawCanvas {
     if (this.score === brickColumnCount * brickRowCount * level) {
       level++;
       //호출되는 시간을 짧게 해서 공의 속도 증가
-      initialSpeed -= 1.5;
+      initialSpeed -= 1;
 
       if (level < 5) {
         alert(`🌟 LEVEL UP 🌟`);
@@ -456,6 +456,8 @@ function play() {
     drawCanvas.MovePaddle();
   }
 }
+
+//setTimeout으로 delay를 바꿀 수 있는 setInterval
 
 function timer() {
   if (drawCanvas.life) {
