@@ -138,9 +138,9 @@ class DrawObject {
     ctx.font = "bold 17pt Arial";
     ctx.fillStyle = "black";
     if (topScore) {
-      ctx.fillText(`TOP SCORE: ${topScore}`, 160, 121);
+      ctx.fillText(`TOP SCORE: ${topScore}`, 160, 122);
     } else {
-      ctx.fillText(`TOP SCORE: 0`, 160, 121);
+      ctx.fillText(`TOP SCORE: 0`, 160, 122);
     }
   }
 
@@ -154,7 +154,7 @@ class DrawObject {
     ctx.font = "bold 20pt Arial";
     ctx.fillStyle = "#57837B";
     // 💥 💘 💰 🚀 🎇 🌟
-    ctx.fillText(`🚀 Score: ${score}`, 46, 38);
+    ctx.fillText(`🚀 Score: ${score}`, 50, 38);
   }
 
   DrawLine() {
@@ -243,7 +243,7 @@ class DrawCanvas {
 
       if (!this.life) {
         //sound.src = "./laugh.mp3";
-        localStorage.setItem("score", this.score);
+        localStorage.setItem("topScore", this.score);
         alert("GAME OVER 😝");
       } else if (this.life > 0) {
         alert(`YOU HAVE ${this.life} MORE CHANCE!  🙏 `);
