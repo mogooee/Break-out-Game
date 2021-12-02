@@ -242,7 +242,10 @@ class DrawCanvas {
 
       if (!this.life) {
         //sound.src = "./laugh.mp3";
-        localStorage.setItem("TopScore", this.score);
+        localStorage.setItem(
+          "TopScore",
+          this.score > TopScore ? this.score : TopScore
+        );
         alert("GAME OVER 😝");
       } else if (this.life > 0) {
         alert(`YOU HAVE ${this.life} MORE CHANCE!  🙏 `);
@@ -374,7 +377,10 @@ class DrawCanvas {
         brickOffsetTop += 20;
       } else {
         bgm.pause();
-        localStorage.setItem("TopScore", this.score);
+        localStorage.setItem(
+          "TopScore",
+          this.score > TopScore ? this.score : TopScore
+        );
         alert("YOU WIN 😄");
         clearInterval(timer);
         document.location.reload();
