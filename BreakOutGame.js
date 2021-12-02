@@ -39,8 +39,8 @@ let leftMoved = false;
 const brickRowCount = 6;
 const brickColumnCount = 5;
 const brickWidth = canvas.width / brickColumnCount;
-const brickHeight = 35;
-const brickPadding = 6;
+const brickHeight = 30;
+const brickPadding = 5;
 let brickOffsetTop = 134;
 const brickOffsetLeft = 2.8;
 
@@ -48,8 +48,7 @@ let level = 1;
 let initialSpeed = 10;
 
 //local storage
-
-const topScore = localStorage.getItem("topScore");
+const bestScore = localStorage.getItem("bestScore");
 
 class DrawObject {
   constructor() {
@@ -134,14 +133,10 @@ class DrawObject {
     }
   }
 
-  DrawTopScore() {
+  DrawBestCore() {
     ctx.font = "bold 17pt Arial";
     ctx.fillStyle = "black";
-    if (topScore) {
-      ctx.fillText(`TOP SCORE: ${topScore}`, 160, 122);
-    } else {
-      ctx.fillText(`TOP SCORE: 0`, 160, 122);
-    }
+    ctx.fillText(`BEST SCORE: ${bestScore}`, 165, 120);
   }
 
   DrawLevel() {
@@ -154,7 +149,7 @@ class DrawObject {
     ctx.font = "bold 20pt Arial";
     ctx.fillStyle = "#57837B";
     // 💥 💘 💰 🚀 🎇 🌟
-    ctx.fillText(`🚀 Score: ${score}`, 50, 38);
+    ctx.fillText(`🚀 Score: ${score}`, 49, 38);
   }
 
   DrawLine() {
@@ -180,6 +175,7 @@ class DrawCanvas {
     this.dy2 = -5;
     this.score = 0;
     this.life = 3;
+    this.contact = 0;
     this.calTimer;
   }
 
@@ -242,7 +238,7 @@ class DrawCanvas {
 
       if (!this.life) {
         //sound.src = "./laugh.mp3";
-        localStorage.setItem("topScore", this.score);
+        localStorage.setItem("bestScore", this.score);
         alert("GAME OVER 😝");
       } else if (this.life > 0) {
         alert(`YOU HAVE ${this.life} MORE CHANCE!  🙏 `);
@@ -314,6 +310,7 @@ class DrawCanvas {
           ) {
             //벽돌에 닿으면 튕긴다
             this.dy = -this.dy;
+            this.contact++;
           }
 
           //ball2
@@ -330,11 +327,25 @@ class DrawCanvas {
           ) {
             //벽돌에 닿으면 튕긴다
             this.dy2 = -this.dy2;
+            this.contact++;
           }
 
-          this.drawObject.bricks[r][c] -= 1;
-          if (!this.drawObject.bricks[r][c]) {
-            this.score++;
+          if (this.contact) {
+            if (this.calTimer) {
+              return;
+            }
+
+            //[V]연속해서 깰 수 없게? - 스로틀
+            this.calTimer = setTimeout(() => {
+              this.calTimer = null;
+              this.drawObject.bricks[r][c] -= 1;
+              if (!this.drawObject.bricks[r][c]) {
+                this.score++;
+                sound.src = "./break.mp3";
+                //sound.play();
+              }
+              this.contact = 0;
+            }, 50);
           }
         }
       }
@@ -359,7 +370,7 @@ class DrawCanvas {
         brickOffsetTop += 20;
       } else {
         bgm.pause();
-        localStorage.setItem("topScore", this.score);
+        localStorage.setItem("bestScore", this.score);
         alert("YOU WIN 😄");
         clearInterval(timer);
         document.location.reload();
@@ -390,7 +401,7 @@ class DrawCanvas {
     this.drawObject.DrawLife(this.life);
     this.drawObject.DrawLevel();
     this.drawObject.DrawLine();
-    this.drawObject.DrawTopScore();
+    this.drawObject.DrawBestCore();
 
     if (level == 4) {
       this.drawObject.DrawBall2();
