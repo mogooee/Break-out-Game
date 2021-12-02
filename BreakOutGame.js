@@ -9,6 +9,7 @@ const volumeOff = document.querySelector(".volumeOff");
 //[]효과음
 const bgm = document.getElementById("bgm");
 let soundEffect = 0;
+let pause = 0;
 
 volumeOff.addEventListener("click", (event) => {
   volumeOff.classList.toggle("hidden");
@@ -430,6 +431,7 @@ class DrawCanvas {
 }
 
 document.addEventListener("keydown", (event) => {
+  pause = 0;
   if (event.key == "ArrowRight") {
     rightMoved = true;
   } else if (event.key == "ArrowLeft") {
@@ -447,11 +449,19 @@ document.addEventListener("keyup", (event) => {
 
 document.addEventListener("mousemove", (event) => {
   //브라우저에서 마우스 x좌표값 - 캔버스가 시작되는 x값 (좌측 여백)
+
   let myX = event.clientX - canvas.offsetLeft;
+  let myY = event.clientY - canvas.offsetTop;
 
   if (myX > 0 && myX < canvas.width) {
     //myX = paddle의 중앙
     drawObject.paddleX = myX - paddleWidth / 2;
+
+    if (myY > 0 && myY < canvas.height) {
+      pause = 0;
+    }
+  } else {
+    pause = 1;
   }
 
   //paddleX+paddleWidth>canvas.width
@@ -474,10 +484,12 @@ function play() {
 }
 
 //setTimeout으로 delay를 바꿀 수 있는 setInterval
-
 function timer() {
+  console.log(pause);
   if (drawCanvas.life) {
-    play();
+    if (!pause) {
+      play();
+    }
     setTimeout(timer, initialSpeed);
   } else {
     clearTimeout();
