@@ -3,7 +3,6 @@
   margin: 0;
 }
 canvas {
-  /* background: #eee; */
   background: #eeeeee;
   display: block;
   margin: 0 auto;
@@ -26,10 +25,11 @@ canvas {
 /*img값을 정한다*/
 .header img {
   position: absolute;
-  right: 2rem;
+  right: 2.2rem;
   top: 6.3rem;
   padding: 2px;
   border: solid;
+  border-style: tin;
   width: 1.5rem;
   height: 1.5rem;
 }
