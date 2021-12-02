@@ -11,6 +11,28 @@ const bgm = document.getElementById("bgm");
 let soundEffect = 0;
 let pause = 0;
 
+let touchPaddleSound = new Audio();
+touchPaddleSound.src = "./touchPaddle.mp3";
+touchPaddleSound.volume = 0.4;
+let breakSound = new Audio();
+breakSound.src = "./break.mp3";
+breakSound.volume = 0.4;
+let successSound = new Audio();
+successSound.src = "./success.mp3";
+successSound.volume = 0.4;
+let laughSound = new Audio();
+laughSound.src = "./laugh.mp3";
+laughSound.volume = 0.4;
+let clapSound = new Audio();
+clapSound.src = "./clap.mp3";
+clapSound.volume = 0.4;
+let failSound = new Audio();
+failSound.src = "./fail.mp3";
+failSound.volume = 0.4;
+let clickSound = new Audio();
+clickSound.src = "./click.mp3";
+clickSound.volume = 0.2;
+
 volumeOff.addEventListener("click", (event) => {
   volumeOff.classList.toggle("hidden");
   volumeOn.classList.toggle("hidden");
@@ -18,6 +40,7 @@ volumeOff.addEventListener("click", (event) => {
   bgm.muted = false;
   bgm.volume = 0.4;
   bgm.play();
+  clickSound.play();
   soundEffect = 1;
 });
 
@@ -25,6 +48,7 @@ volumeOn.addEventListener("click", (event) => {
   volumeOff.classList.toggle("hidden");
   volumeOn.classList.toggle("hidden");
   bgm.pause();
+  clickSound.play();
   soundEffect = 0;
 });
 
@@ -50,11 +74,6 @@ let initialSpeed = 8;
 
 //local storage
 const TopScore = localStorage.getItem("TopScore");
-
-let touchPaddleSound = new Audio();
-touchPaddleSound.src = "./touchPaddle.mp3";
-let breakSound = new Audio();
-breakSound.src = "./break.mp3";
 
 class DrawObject {
   constructor() {
@@ -247,13 +266,19 @@ class DrawCanvas {
       this.life--;
 
       if (!this.life) {
-        //sound.src = "./laugh.mp3";
         localStorage.setItem(
           "TopScore",
           this.score > TopScore ? this.score : TopScore
         );
+        if (soundEffect) {
+          laughSound.play();
+        }
+
         alert("GAME OVER 😝");
       } else if (this.life > 0) {
+        if (soundEffect) {
+          failSound.play();
+        }
         alert(`YOU HAVE ${this.life} MORE CHANCE!  🙏 `);
         this.drawObject.ballX = canvas.width / 2;
         this.drawObject.ballY = canvas.height - paddleHeight - ballRadius;
@@ -375,6 +400,9 @@ class DrawCanvas {
       initialSpeed -= 1;
 
       if (level < 5) {
+        if (soundEffect) {
+          successSound.play();
+        }
         alert(`🌟 LEVEL UP 🌟`);
         this.drawObject.MakeBricks(level);
         this.drawObject.DrawBricks();
@@ -392,7 +420,12 @@ class DrawCanvas {
           "TopScore",
           this.score > TopScore ? this.score : TopScore
         );
+
+        if (soundEffect) {
+          clapSound.play();
+        }
         alert("YOU WIN 😄");
+
         clearInterval(timer);
         document.location.reload();
       }
