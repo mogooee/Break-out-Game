@@ -22,6 +22,8 @@ volumeOn.addEventListener("click", (event) => {
   volumeOff.classList.toggle("hidden");
   volumeOn.classList.toggle("hidden");
   bgm.pause();
+  touchPaddleSound.pause();
+  breakSound.pause();
 });
 
 const ballRadius = 12;
