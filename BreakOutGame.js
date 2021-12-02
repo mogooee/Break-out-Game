@@ -518,7 +518,6 @@ function play() {
 
 //setTimeout으로 delay를 바꿀 수 있는 setInterval
 function timer() {
-  console.log(pause);
   if (drawCanvas.life) {
     if (!pause) {
       play();
