@@ -7,18 +7,15 @@ const volumeOff = document.querySelector(".volumeOff");
 
 //[V]bgm
 //[]효과음
-const sound = document.getElementById("sound");
 const bgm = document.getElementById("bgm");
 
 volumeOff.addEventListener("click", (event) => {
   volumeOff.classList.toggle("hidden");
   volumeOn.classList.toggle("hidden");
 
-  sound.muted = false;
   bgm.muted = false;
   bgm.volume = 0.4;
   bgm.play();
-  //sound.play();
 });
 
 volumeOn.addEventListener("click", (event) => {
@@ -49,6 +46,11 @@ let initialSpeed = 8;
 
 //local storage
 const TopScore = localStorage.getItem("TopScore");
+
+let touchPaddleSound = new Audio();
+touchPaddleSound.src = "./touchPaddle.mp3";
+let breakSound = new Audio();
+breakSound.src = "./break.mp3";
 
 class DrawObject {
   constructor() {
@@ -269,7 +271,7 @@ class DrawCanvas {
       ) {
         this.dy = -this.dy;
         this.ChangeSpeed();
-        sound.src = "./touchPaddle.mp3";
+        touchPaddleSound.play();
       }
     }
     //ball2
@@ -283,7 +285,7 @@ class DrawCanvas {
       ) {
         this.dy2 = -this.dy2;
         this.ChangeSpeed();
-        sound.src = "./touchPaddle.mp3";
+        touchPaddleSound.play();
       }
     }
 
@@ -348,8 +350,7 @@ class DrawCanvas {
               this.drawObject.bricks[r][c] -= 1;
               if (!this.drawObject.bricks[r][c]) {
                 this.score++;
-                sound.src = "./break.mp3";
-                //sound.play();
+                breakSound.play();
               }
               this.contact = 0;
             }, 50);
