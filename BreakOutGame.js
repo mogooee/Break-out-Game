@@ -39,8 +39,8 @@ let leftMoved = false;
 const brickRowCount = 6;
 const brickColumnCount = 5;
 const brickWidth = canvas.width / brickColumnCount;
-const brickHeight = 30;
-const brickPadding = 5;
+const brickHeight = 35;
+const brickPadding = 6;
 let brickOffsetTop = 134;
 const brickOffsetLeft = 2.8;
 
@@ -180,7 +180,6 @@ class DrawCanvas {
     this.dy2 = -5;
     this.score = 0;
     this.life = 3;
-    this.contact = 0;
     this.calTimer;
   }
 
@@ -315,7 +314,6 @@ class DrawCanvas {
           ) {
             //벽돌에 닿으면 튕긴다
             this.dy = -this.dy;
-            this.contact++;
           }
 
           //ball2
@@ -332,25 +330,11 @@ class DrawCanvas {
           ) {
             //벽돌에 닿으면 튕긴다
             this.dy2 = -this.dy2;
-            this.contact++;
           }
 
-          if (this.contact) {
-            if (this.calTimer) {
-              return;
-            }
-
-            //[V]연속해서 깰 수 없게? - 스로틀
-            this.calTimer = setTimeout(() => {
-              this.calTimer = null;
-              this.drawObject.bricks[r][c] -= 1;
-              if (!this.drawObject.bricks[r][c]) {
-                this.score++;
-                sound.src = "./break.mp3";
-                //sound.play();
-              }
-              this.contact = 0;
-            }, 50);
+          this.drawObject.bricks[r][c] -= 1;
+          if (!this.drawObject.bricks[r][c]) {
+            this.score++;
           }
         }
       }
